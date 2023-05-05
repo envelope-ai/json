@@ -9,6 +9,7 @@ use alloc::string::{String, ToString};
 use core::fmt::{self, Debug, Display};
 #[cfg(not(feature = "arbitrary_precision"))]
 use core::hash::{Hash, Hasher};
+use rkyv::{Archive, Deserialize as RkyvDeserialize, Serialize as RkyvSerialize};
 use serde::de::{self, Unexpected, Visitor};
 #[cfg(feature = "arbitrary_precision")]
 use serde::de::{IntoDeserializer, MapAccess};
@@ -18,14 +19,15 @@ use serde::{forward_to_deserialize_any, Deserialize, Deserializer, Serialize, Se
 pub(crate) const TOKEN: &str = "$serde_json::private::Number";
 
 /// Represents a JSON number, whether integer or floating point.
-#[derive(Clone, PartialEq, Eq, Hash)]
+#[derive(Clone, PartialEq, Eq, Hash, Archive, RkyvDeserialize, RkyvSerialize)]
 pub struct Number {
-    n: N,
+    /// something
+    pub n: N,
 }
 
 #[cfg(not(feature = "arbitrary_precision"))]
-#[derive(Copy, Clone)]
-enum N {
+#[derive(Copy, Clone, Archive, RkyvDeserialize, RkyvSerialize)]
+pub enum N {
     PosInt(u64),
     /// Always less than zero.
     NegInt(i64),

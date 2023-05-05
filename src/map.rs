@@ -15,6 +15,7 @@ use core::iter::{FromIterator, FusedIterator};
 #[cfg(feature = "preserve_order")]
 use core::mem;
 use core::ops;
+use rkyv::{Archive, Deserialize as RkyvDeserialize, Serialize as RkyvSerialize};
 use serde::de;
 
 #[cfg(not(feature = "preserve_order"))]
@@ -23,6 +24,7 @@ use alloc::collections::{btree_map, BTreeMap};
 use indexmap::{self, IndexMap};
 
 /// Represents a JSON key/value type.
+#[derive(Archive, RkyvDeserialize, RkyvSerialize)]
 pub struct Map<K, V> {
     map: MapImpl<K, V>,
 }

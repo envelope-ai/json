@@ -97,6 +97,7 @@ use alloc::vec::Vec;
 use core::fmt::{self, Debug, Display};
 use core::mem;
 use core::str;
+use rkyv::{Archive, Deserialize as RkyvDeserialize, Serialize as RkyvSerialize};
 use serde::de::DeserializeOwned;
 use serde::ser::Serialize;
 
@@ -111,7 +112,8 @@ pub use crate::raw::{to_raw_value, RawValue};
 /// Represents any valid JSON value.
 ///
 /// See the [`serde_json::value` module documentation](self) for usage examples.
-#[derive(Clone, Eq, PartialEq)]
+#[derive(Clone, Eq, PartialEq, Archive, RkyvDeserialize, RkyvSerialize)]
+#[archive(bound(serialize = "__S: rkyv::ser::ScratchSpace + rkyv::ser::Serializer"))]
 pub enum Value {
     /// Represents a JSON null value.
     ///
@@ -156,7 +158,11 @@ pub enum Value {
     /// #
     /// let v = json!(["an", "array"]);
     /// ```
-    Array(Vec<Value>),
+    Array(
+        #[omit_bounds]
+        // #[archive_attr(omit_bounds)]
+        Vec<Value>,
+    ),
 
     /// Represents a JSON object.
     ///
@@ -171,7 +177,11 @@ pub enum Value {
     /// #
     /// let v = json!({ "an": "object" });
     /// ```
-    Object(Map<String, Value>),
+    Object(
+        #[omit_bounds]
+        // #[archive_attr(omit_bounds)]
+        Map<String, Value>,
+    ),
 }
 
 impl Debug for Value {
