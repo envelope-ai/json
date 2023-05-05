@@ -25,6 +25,7 @@ use indexmap::{self, IndexMap};
 
 /// Represents a JSON key/value type.
 #[derive(Archive, RkyvDeserialize, RkyvSerialize)]
+#[archive(check_bytes)]
 pub struct Map<K, V> {
     map: MapImpl<K, V>,
 }
