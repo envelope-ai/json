@@ -114,6 +114,7 @@ pub use crate::raw::{to_raw_value, RawValue};
 /// See the [`serde_json::value` module documentation](self) for usage examples.
 #[derive(Clone, Eq, PartialEq, Archive, RkyvDeserialize, RkyvSerialize)]
 #[archive(bound(serialize = "__S: rkyv::ser::ScratchSpace + rkyv::ser::Serializer"))]
+#[archive(check_bytes)]
 pub enum Value {
     /// Represents a JSON null value.
     ///
