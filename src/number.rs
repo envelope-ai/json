@@ -14,12 +14,15 @@ use serde::de::{self, Unexpected, Visitor};
 #[cfg(feature = "arbitrary_precision")]
 use serde::de::{IntoDeserializer, MapAccess};
 use serde::{forward_to_deserialize_any, Deserialize, Deserializer, Serialize, Serializer};
+use speedy::{Readable, Writable};
 
 #[cfg(feature = "arbitrary_precision")]
 pub(crate) const TOKEN: &str = "$serde_json::private::Number";
 
 /// Represents a JSON number, whether integer or floating point.
-#[derive(Clone, PartialEq, Eq, Hash, Archive, RkyvDeserialize, RkyvSerialize)]
+#[derive(
+    Clone, PartialEq, Eq, Hash, Archive, RkyvDeserialize, RkyvSerialize, Readable, Writable,
+)]
 #[archive(check_bytes)]
 pub struct Number {
     /// something
@@ -27,7 +30,7 @@ pub struct Number {
 }
 
 #[cfg(not(feature = "arbitrary_precision"))]
-#[derive(Copy, Clone, Archive, RkyvDeserialize, RkyvSerialize)]
+#[derive(Copy, Clone, Archive, RkyvDeserialize, RkyvSerialize, Readable, Writable)]
 #[archive(check_bytes)]
 pub enum N {
     PosInt(u64),

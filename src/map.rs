@@ -17,6 +17,7 @@ use core::mem;
 use core::ops;
 use rkyv::{Archive, Deserialize as RkyvDeserialize, Serialize as RkyvSerialize};
 use serde::de;
+use speedy::{Readable, Writable};
 
 #[cfg(not(feature = "preserve_order"))]
 use alloc::collections::{btree_map, BTreeMap};
@@ -24,7 +25,7 @@ use alloc::collections::{btree_map, BTreeMap};
 use indexmap::{self, IndexMap};
 
 /// Represents a JSON key/value type.
-#[derive(Archive, RkyvDeserialize, RkyvSerialize)]
+#[derive(Archive, RkyvDeserialize, RkyvSerialize, Readable, Writable)]
 #[archive(check_bytes)]
 pub struct Map<K, V> {
     map: MapImpl<K, V>,

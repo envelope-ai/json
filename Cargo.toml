@@ -17,6 +17,7 @@ indexmap = { version = "1.5.2", features = ["std"], optional = true }
 itoa = "1.0"
 ryu = "1.0"
 rkyv = { version = "0.7.41", features = ["validation"] }
+speedy = "0.8.6"
 
 [dev-dependencies]
 automod = "1.0"

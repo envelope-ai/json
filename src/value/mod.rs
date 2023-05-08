@@ -100,6 +100,7 @@ use core::str;
 use rkyv::{Archive, Deserialize as RkyvDeserialize, Serialize as RkyvSerialize};
 use serde::de::DeserializeOwned;
 use serde::ser::Serialize;
+use speedy::{Readable, Writable};
 
 pub use self::index::Index;
 pub use self::ser::Serializer;
@@ -112,7 +113,7 @@ pub use crate::raw::{to_raw_value, RawValue};
 /// Represents any valid JSON value.
 ///
 /// See the [`serde_json::value` module documentation](self) for usage examples.
-#[derive(Clone, Eq, PartialEq, Archive, RkyvDeserialize, RkyvSerialize)]
+#[derive(Clone, Eq, PartialEq, Archive, RkyvDeserialize, RkyvSerialize, Readable, Writable)]
 #[archive(bound(serialize = "__S: rkyv::ser::ScratchSpace + rkyv::ser::Serializer"))]
 #[archive_attr(check_bytes(
     bound = "__C: rkyv::validation::ArchiveContext, <__C as rkyv::Fallible>::Error: rkyv::bytecheck::Error"
